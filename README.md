@@ -36,5 +36,3 @@ I tested it mainly on the full Shakespeare dataset (4.6MB).
 
 ## License
 Copyright (c) 2017 Matt Garstka, MIT License
-
-test
