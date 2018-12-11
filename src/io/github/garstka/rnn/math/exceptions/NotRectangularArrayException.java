@@ -1,23 +1,18 @@
 package io.github.garstka.rnn.math.exceptions;
 
-public class NotRectangularArrayException extends Exception
-{
-	public NotRectangularArrayException()
-	{
-	}
+public class NotRectangularArrayException extends Exception {
 
-	public NotRectangularArrayException(String message)
-	{
+	public NotRectangularArrayException() { }
+
+	public NotRectangularArrayException(String message) {
 		super(message);
 	}
 
-	public NotRectangularArrayException(Throwable cause)
-	{
+	public NotRectangularArrayException(Throwable cause) {
 		super(cause);
 	}
 
-	public NotRectangularArrayException(String message, Throwable cause)
-	{
+	public NotRectangularArrayException(String message, Throwable cause) {
 		super(message, cause);
 	}
 }

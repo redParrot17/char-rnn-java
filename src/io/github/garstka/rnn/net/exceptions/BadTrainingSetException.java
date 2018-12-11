@@ -1,24 +1,21 @@
 package io.github.garstka.rnn.net.exceptions;
 
-// Exception thrown when the training set is too small.
-public class BadTrainingSetException extends Exception
-{
-	public BadTrainingSetException()
-	{
-	}
+/**
+ * Exception thrown when the training set is too small.
+ */
+public class BadTrainingSetException extends Exception {
 
-	public BadTrainingSetException(String message)
-	{
+	public BadTrainingSetException() { }
+
+	public BadTrainingSetException(String message) {
 		super(message);
 	}
 
-	public BadTrainingSetException(Throwable cause)
-	{
+	public BadTrainingSetException(Throwable cause) {
 		super(cause);
 	}
 
-	public BadTrainingSetException(String message, Throwable cause)
-	{
+	public BadTrainingSetException(String message, Throwable cause) {
 		super(message, cause);
 	}
 }

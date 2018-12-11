@@ -1,23 +1,18 @@
 package io.github.garstka.rnn.math.exceptions;
 
-public class NotAVectorException extends RuntimeException
-{
-	public NotAVectorException()
-	{
-	}
+public class NotAVectorException extends RuntimeException {
 
-	public NotAVectorException(String message)
-	{
+	public NotAVectorException() { }
+
+	public NotAVectorException(String message) {
 		super(message);
 	}
 
-	public NotAVectorException(Throwable cause)
-	{
+	public NotAVectorException(Throwable cause) {
 		super(cause);
 	}
 
-	public NotAVectorException(String message, Throwable cause)
-	{
+	public NotAVectorException(String message, Throwable cause) {
 		super(message, cause);
 	}
 }

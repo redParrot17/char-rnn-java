@@ -6,18 +6,20 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.TreeSet;
 
-// Immutable set of symbols mapped indices.
-public class Alphabet implements Serializable
-{
+/**
+ * Immutable set of symbols mapped indices.
+ */
+public class Alphabet implements Serializable {
+
 	private char[] indexToChar;
 	private HashMap<Character, Integer> charToIndex;
 
-	// Constructs an alphabet containing symbols extracted from the string.
-	// Treats null as an empty string.
-	private Alphabet(String data)
-	{
-		if (data == null)
-		{
+	/**
+	 * Constructs an alphabet containing symbols extracted from the string.
+	 * Treats null as an empty string.
+	 */
+	private Alphabet(String data) {
+		if (data == null) {
 			indexToChar = new char[0];
 			charToIndex = new HashMap<>();
 			return;
@@ -33,50 +35,51 @@ public class Alphabet implements Serializable
 		indexToChar = new char[chars.size()];
 
 		int i = 0;
-		for (Character c : chars)
-		{
+		for (Character c : chars) {
 			indexToChar[i] = c;
 			charToIndex.put(c, i++);
 		}
 	}
 
-	// Returns alphabet containing symbols extracted from the string.
-	// Treats null as an empty string.
-	public static Alphabet fromString(String data)
-	{
+	/**
+	 * Returns alphabet containing symbols extracted from the string.
+	 * Treats null as an empty string.
+	 */
+	public static Alphabet fromString(String data) {
 		return new Alphabet(data);
 	}
 
-	// Returns the alphabet size.
-	public int size()
-	{
+	/**
+	 * Returns the alphabet size.
+	 */
+	public int size() {
 		return indexToChar.length;
 	}
 
-	// Converts a character to the corresponding index.
-	public int charToIndex(char c) throws CharacterNotInAlphabetException
-	{
+	/**
+	 * Converts a character to the corresponding index.
+	 */
+	public int charToIndex(char c) throws CharacterNotInAlphabetException {
 		Integer index = charToIndex.get(c);
 		if (index == null)
-			throw new CharacterNotInAlphabetException(
-			    "Character is not a part of the alphabet.");
-
+			throw new CharacterNotInAlphabetException("Character is not a part of the alphabet.");
 		return index;
 	}
 
-	// Converts an index to the corresponding character.
-	// Index must be an index returned by charToIndex.
-	public char indexToChar(int index)
-	{
+	/**
+	 * Converts an index to the corresponding character.
+	 * Index must be an index returned by charToIndex.
+	 */
+	public char indexToChar(int index) {
 		if (!(index >= 0 && index < size()))
-			throw new IndexOutOfBoundsException(
-			    "Index does not correspond to a character.");
+			throw new IndexOutOfBoundsException("Index does not correspond to a character.");
 		return indexToChar[index];
 	}
 
-	// Converts all indices to chars using indexToChar.
-	public char[] indicesToChars(int[] indices)
-	{
+	/**
+	 * Converts all indices to chars using indexToChar.
+	 */
+	public char[] indicesToChars(int[] indices) {
 		if (indices == null)
 			throw new NullPointerException("Indices can't be null.");
 
@@ -88,10 +91,10 @@ public class Alphabet implements Serializable
 		return out;
 	}
 
-	// Converts the string to indices using charToIndex.
-	public int[] charsToIndices(String chars)
-	    throws CharacterNotInAlphabetException
-	{
+	/**
+	 * Converts the string to indices using charToIndex.
+	 */
+	public int[] charsToIndices(String chars) throws CharacterNotInAlphabetException {
 		if (chars == null)
 			throw new NullPointerException("Array can't be null.");
 

@@ -3,9 +3,10 @@ package io.github.garstka.rnn.net;
 import io.github.garstka.rnn.math.Matrix;
 import io.github.garstka.rnn.math.Random;
 
-// Single layer RNN.
-public class SingleLayerRNN extends BasicRNN
-{
+/**
+ * Single layer RNN.
+ */
+public class SingleLayerRNN extends BasicRNN {
 	// The layer
 
 	protected RNNLayer layer; // The single RNN layer
@@ -14,43 +15,47 @@ public class SingleLayerRNN extends BasicRNN
 
 	/*** Construct ***/
 
-	// Creates a net with default parameters.
-	public SingleLayerRNN()
-	{
+	/**
+	 * Creates a net with default parameters.
+	 */
+	public SingleLayerRNN() {
 		layer = new RNNLayer();
 	}
 
-	// Creates a net with default parameters and initializes immediately.
-	public SingleLayerRNN(int vocabularySize)
-	{
+	/**
+	 * Creates a net with default parameters and initializes immediately.
+	 */
+	public SingleLayerRNN(int vocabularySize) {
 		this();
 		initialize(vocabularySize);
 	}
 
-	/*** Hyperparameters ***/
+	/* Hyperparameters */
 
-	// Sets the hidden layer size. Network must be initialized again.
-	public void setHiddenSize(int hiddenSize)
-	{
+	/**
+	 * Sets the hidden layer size. Network must be initialized again.
+	 */
+	public void setHiddenSize(int hiddenSize) {
 		if (hiddenSize < 1)
-			throw new IllegalArgumentException(
-			    "Hidden size can't be less than 1.");
+			throw new IllegalArgumentException("Hidden size can't be less than 1.");
 		layer.setHiddenSize(hiddenSize);
 		initialized = false;
 	}
 
-	// Sets the learning rate.
-	public void setLearningRate(double learningRate)
-	{
+	/**
+	 * Sets the learning rate.
+	 */
+	public void setLearningRate(double learningRate) {
 		layer.setLearningRate(learningRate);
 	}
 
-	/*** Initialize ***/
+	/* Initialize */
 
-	// Initializes the net for this vocabulary size.
-	// Requires vocabularySize > 0.
-	public void initialize(int vocabularySize)
-	{
+	/**
+	 * Initializes the net for this vocabulary size.
+	 * Requires vocabularySize > 0.
+	 */
+	public void initialize(int vocabularySize) {
 		if (vocabularySize < 1)
 			throw new IllegalArgumentException("Vocabulary size must be > 0.");
 
@@ -64,18 +69,17 @@ public class SingleLayerRNN extends BasicRNN
 		initialized = true;
 	}
 
-	/*** Train ***/
+	/* Train */
 
-	/*
-	    Performs a forward-backward pass for the given indices.
-
-	    ix.length and iy.length lengths must match, can't be empty.
-	    All indices must be less than the vocabulary size.
-
-	    Returns the cross-entropy loss.
-	*/
-	public double forwardBackward(int[] ix, int[] iy)
-	{
+	/**
+	 * Performs a forward-backward pass for the given indices.
+	 *
+	 * ix.length and iy.length lengths must match, can't be empty.
+	 * All indices must be less than the vocabulary size.
+	 *
+	 * Returns the cross-entropy loss.
+	 */
+	public double forwardBackward(int[] ix, int[] iy) {
 		if (!initialized)
 			throw new IllegalStateException("Network is uninitialized.");
 
@@ -83,12 +87,10 @@ public class SingleLayerRNN extends BasicRNN
 			throw new NullPointerException("Arrays can't be null.");
 
 		if (ix.length != iy.length)
-			throw new IllegalArgumentException(
-			    "Inputs and outputs must match.");
+			throw new IllegalArgumentException("Inputs and outputs must match.");
 
 		if (ix.length == 0)
-			throw new IllegalArgumentException(
-			    "Can't perform a pass on an empty sequence.");
+			throw new IllegalArgumentException("Can't perform a pass on an empty sequence.");
 
 		layer.forward(layer.ixTox(ix));
 		double loss = layer.getLoss(iy);
@@ -97,17 +99,19 @@ public class SingleLayerRNN extends BasicRNN
 		return loss;
 	}
 
-	/*** Sample ***/
+	/* Sample */
 
-	// Samples n indices, sequence seed, advance the state.
-	public int[] sampleIndices(int n, int[] seed, double temp)
-	{
+	/**
+	 * Samples n indices, sequence seed, advance the state.
+	 */
+	public int[] sampleIndices(int n, int[] seed, double temp) {
 		return sampleIndices(n, seed, temp, true);
 	}
 
-	// Samples n indices, sequence seed, choose whether to advance the state.
-	public int[] sampleIndices(int n, int[] seed, double temp, boolean advance)
-	{
+	/**
+	 * Samples n indices, sequence seed, choose whether to advance the state.
+	 */
+	public int[] sampleIndices(int n, int[] seed, double temp, boolean advance) {
 		if (!initialized)
 			throw new IllegalStateException("Network is uninitialized.");
 
@@ -117,21 +121,19 @@ public class SingleLayerRNN extends BasicRNN
 		if (seed == null)
 			throw new NullPointerException("Non-null seed expected.");
 
-		if (n < 0)
-			throw new IllegalArgumentException("Non-negative length expected.");
+		//if (n < 0)
+		//	throw new IllegalArgumentException("Non-negative length expected.");
 
 		Matrix savedState = !advance ? layer.saveHiddenState() : null;
 
 		int[] sampled = new int[n];
 
 		layer.forward(layer.ixTox(seed));
-		sampled[0] = Random.randomChoice(
-		    layer.getProbabilities(temp)); // first choice given seed
+		sampled[0] = Random.randomChoice(layer.getProbabilities(temp)); // first choice given seed
 
 
 		Matrix seedVec = layer.ixTox(sampled[0]);
-		for (int t = 1; t < n; t++)
-		{
+		for (int t = 1; t < n; t++) {
 			layer.forward(seedVec);
 			sampled[t] = Random.randomChoice(layer.getProbabilities(temp));
 			seedVec = layer.ixTox(sampled[t]);
@@ -143,15 +145,17 @@ public class SingleLayerRNN extends BasicRNN
 		return sampled;
 	}
 
-	// Returns true if the net was initialized.
-	public boolean isInitialized()
-	{
+	/**
+	 * Returns true if the net was initialized.
+	 */
+	public boolean isInitialized() {
 		return initialized;
 	}
 
-	// Returns the vocabulary size - max index + 1.
-	public int getVocabularySize()
-	{
+	/**
+	 * Returns the vocabulary size - max index + 1.
+	 */
+	public int getVocabularySize() {
 		if (!initialized)
 			throw new IllegalStateException("Network is uninitialized.");
 		return layer.getInputSize();
